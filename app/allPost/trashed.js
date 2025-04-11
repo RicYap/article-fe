@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import React from "react";
 
-const Published = ({ list }) => {
+const Trashed = ({ list }) => {
   return (
     <Grid container width={"100%"} pl={4} pr={4}>
       <Paper sx={{ width: "100%", backgroundColor: "" }}>
@@ -91,4 +91,4 @@ const Published = ({ list }) => {
   );
 };
 
-export default Published;
+export default Trashed;
