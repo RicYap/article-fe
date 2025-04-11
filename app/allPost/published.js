@@ -1,3 +1,4 @@
+import { Delete, Edit } from "@mui/icons-material";
 import {
   Button,
   Grid,
@@ -14,7 +15,7 @@ import React from "react";
 const Published = ({ list }) => {
   return (
     <Grid container width={"100%"} pl={4} pr={4}>
-      <Paper sx={{ width: "100%", backgroundColor: "" }}>
+      <Paper sx={{ width: "100%" }}>
         <TableContainer>
           <Table stickyHeader>
             <TableHead>
@@ -27,13 +28,13 @@ const Published = ({ list }) => {
                 </TableCell>
                 <TableCell
                   variant="subtitle1"
-                  sx={{ fontWeight: 600, width: "20%" }}
+                  sx={{ fontWeight: 600, width: "25%" }}
                 >
                   Category
                 </TableCell>
                 <TableCell
                   variant="subtitle1"
-                  sx={{ fontWeight: 600, width: "20%" }}
+                  sx={{ fontWeight: 600, width: "15%" }}
                 >
                   Action
                 </TableCell>
@@ -49,22 +50,22 @@ const Published = ({ list }) => {
                       <Grid container spacing={1}>
                         <Grid item flex={1}>
                           <Button
-                            fullWidth
                             size="small"
                             color="warning"
                             variant="contained"
+                            sx={{ minWidth: 0.7 }}
                           >
-                            Edit
+                            <Edit/>
                           </Button>
                         </Grid>
                         <Grid item flex={1}>
                           <Button
-                            fullWidth
                             size="small"
                             color="error"
                             variant="contained"
+                            sx={{ minWidth: 0.7 }}
                           >
-                            Thrash
+                            <Delete/>
                           </Button>
                         </Grid>
                       </Grid>
