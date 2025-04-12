@@ -148,6 +148,7 @@ const Published = ({ list, loading, onSubmit }) => {
       </Paper>
 
       <Snackbar
+        autoHideDuration={1500}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         open={alert.message !== ""}
         onClose={() => {
