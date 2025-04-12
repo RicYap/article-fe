@@ -27,7 +27,7 @@ export default function Home() {
 
   const [params, setParams] = useState({
     page: 1,
-    length: 10,
+    length: 10000,
   });
 
   const [articlePublished, setArticlePublished] = useState([]);
@@ -62,7 +62,7 @@ export default function Home() {
             listDraft.push(item);
             return;
           }
-          if (status === "thrashed") {
+          if (status === "thrash") {
             listTrashed.push(item);
             return;
           }
@@ -128,58 +128,14 @@ export default function Home() {
         <Tab label="Trashed" value={3} />
       </Tabs>
 
-      {tab === 1 && <Published list={articlePublished}></Published>}
+      {tab === 1 && (
+        <Published
+          list={articlePublished}
+          onSubmit={()=>debounceMountArticlePagination(params.length, params.page)}
+        ></Published>
+      )}
       {tab === 2 && <Draft list={articleDraft}></Draft>}
       {tab === 3 && <Trashed list={articleTrashed}></Trashed>}
-
-      <Grid container pl={4} pr={4}>
-        <Grid container p={2} width={"100%"} sx={{ backgroundColor: "white" }}>
-          <Grid item flex={1}></Grid>
-          <Grid container item flex={1}>
-            <Grid container item flex={1} justifyContent={"flex-end"}>
-              <IconButton
-                disabled={params.page === 1}
-                onClick={() => handlePageChange(params.page - 1)}
-              >
-                <NavigateBefore></NavigateBefore>
-              </IconButton>
-            </Grid>
-            <Grid container item flex={1} justifyContent={"center"}>
-              <Button variant="outlined" disableRipple disableFocusRipple>
-                {params.page}
-              </Button>
-            </Grid>
-            <Grid container item flex={1} justifyContent={"flex-start"}>
-              <IconButton
-                disabled={tab === 1 && articlePublished.length < params.length}
-                onClick={() => handlePageChange(params.page + 1)}
-              >
-                <NavigateNext></NavigateNext>
-              </IconButton>
-            </Grid>
-          </Grid>
-          <Grid
-            item
-            flex={1}
-            sx={{ display: "flex", justifyContent: "flex-end" }}
-          >
-            <FormControl>
-              <InputLabel id="baris">Baris</InputLabel>
-              <Select
-                size="small"
-                id="baris"
-                value={params.length}
-                label="Baris"
-                onChange={handleRowsPerPageChange}
-              >
-                <MenuItem value={10}>10</MenuItem>
-                <MenuItem value={25}>25</MenuItem>
-                <MenuItem value={50}>50</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
-      </Grid>
     </Box>
   );
 }

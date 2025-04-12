@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { Delete, Edit } from "@mui/icons-material";
+import { Edit } from "@mui/icons-material";
 import {
   Button,
   Grid,
@@ -19,7 +19,7 @@ const Trashed = ({ list }) => {
   const router = useRouter();
 
   return (
-    <Grid container width={"100%"} pl={4} pr={4}>
+    <Grid container width={"100%"} pl={4} pr={4} mb={4}>
       <Paper sx={{ width: "100%" }}>
         <TableContainer>
           <Table stickyHeader>
@@ -62,16 +62,6 @@ const Trashed = ({ list }) => {
                             onClick={() => router.push(`edit/${item.id}`)}
                           >
                             <Edit />
-                          </Button>
-                        </Grid>
-                        <Grid item flex={1}>
-                          <Button
-                            size="small"
-                            color="error"
-                            variant="contained"
-                            sx={{ minWidth: 0.7 }}
-                          >
-                            <Delete />
                           </Button>
                         </Grid>
                       </Grid>

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Delete, Edit } from "@mui/icons-material";
 import {
@@ -19,7 +19,7 @@ const Draft = ({ list }) => {
   const router = useRouter();
 
   return (
-    <Grid container width={"100%"} pl={4} pr={4}>
+    <Grid container width={"100%"} pl={4} pr={4} mb={4}>
       <Paper sx={{ width: "100%" }}>
         <TableContainer>
           <Table stickyHeader>

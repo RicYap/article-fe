@@ -1,10 +1,14 @@
-"use client"
+"use client";
 
+import api from "@/services/api";
 import { Delete, Edit } from "@mui/icons-material";
 import {
+  Alert,
   Button,
+  debounce,
   Grid,
   Paper,
+  Snackbar,
   Table,
   TableBody,
   TableCell,
@@ -13,13 +17,40 @@ import {
   TableRow,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useCallback, useState } from "react";
 
-const Published = ({ list }) => {
+const Published = ({ list, onSubmit }) => {
   const router = useRouter();
 
+  const [alert, setAlert] = useState({ message: "", severity: "" });
+
+  const debounceTrashArticle = useCallback(debounce(ThrashArticle, 400), []);
+
+  async function ThrashArticle(payload) {
+    var body = payload;
+
+    body.status = "Thrash";
+
+    try {
+      const getArticle = await api.EditArticle(body.id, body);
+
+      const { error } = getArticle.data;
+
+      if (error.msg !== "") {
+        setAlert({ message: error.msg, severity: "error" });
+      } else {
+        setAlert({ message: "Trash Successful", severity: "success" });
+      }
+
+      onSubmit();
+    } catch (error) {
+      console.log(error);
+      setAlert({ message: "An unexpected error occurred", severity: "error" });
+    }
+  }
+
   return (
-    <Grid container width={"100%"} pl={4} pr={4}>
+    <Grid container width={"100%"} pl={4} pr={4} mb={4}>
       <Paper sx={{ width: "100%" }}>
         <TableContainer>
           <Table stickyHeader>
@@ -70,6 +101,7 @@ const Published = ({ list }) => {
                             color="error"
                             variant="contained"
                             sx={{ minWidth: 0.7 }}
+                            onClick={() => debounceTrashArticle(item)}
                           >
                             <Delete />
                           </Button>
@@ -94,6 +126,18 @@ const Published = ({ list }) => {
           </Table>
         </TableContainer>
       </Paper>
+
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={alert.message !== ""}
+        onClose={() => {
+          setAlert({ message: "", severity: "" });
+        }}
+      >
+        <Alert variant="filled" severity={alert.severity}>
+          {alert.message}
+        </Alert>
+      </Snackbar>
     </Grid>
   );
 };

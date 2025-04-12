@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button, Grid, IconButton, Typography } from "@mui/material";
 import Link from "next/link";
