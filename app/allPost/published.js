@@ -5,6 +5,7 @@ import { Delete, Edit } from "@mui/icons-material";
 import {
   Alert,
   Button,
+  CircularProgress,
   debounce,
   Grid,
   Paper,
@@ -15,11 +16,12 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useState } from "react";
 
-const Published = ({ list, onSubmit }) => {
+const Published = ({ list, loading, onSubmit }) => {
   const router = useRouter();
 
   const [alert, setAlert] = useState({ message: "", severity: "" });
@@ -110,6 +112,24 @@ const Published = ({ list, onSubmit }) => {
                     </TableCell>
                   </TableRow>
                 ))
+              ) : loading ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={3}
+                    height={"300px"}
+                    align="center"
+                    sx={{ fontSize: "25px" }}
+                  >
+                    <Grid
+                      container
+                      justifyContent={"center"}
+                      alignItems={"center"}
+                    >
+                      <CircularProgress></CircularProgress>
+                      <Typography variant="h5">Fetching Data</Typography>
+                    </Grid>
+                  </TableCell>
+                </TableRow>
               ) : (
                 <TableRow>
                   <TableCell

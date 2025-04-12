@@ -36,11 +36,7 @@ export function Add() {
 
       const { data, error } = getArticle.data;
 
-      console.log("error", error);
-
       if (error.msg !== "") {
-        console.log("masuk");
-
         setAlert({ message: error.msg, severity: "error" });
       } else {
         setPayload({ title: "", content: "", category: "", status: "" });

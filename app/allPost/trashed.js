@@ -3,6 +3,7 @@
 import { Edit } from "@mui/icons-material";
 import {
   Button,
+  CircularProgress,
   Grid,
   Paper,
   Table,
@@ -11,11 +12,12 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const Trashed = ({ list }) => {
+const Trashed = ({ list, loading }) => {
   const router = useRouter();
 
   return (
@@ -68,6 +70,24 @@ const Trashed = ({ list }) => {
                     </TableCell>
                   </TableRow>
                 ))
+              ) : loading ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={3}
+                    height={"300px"}
+                    align="center"
+                    sx={{ fontSize: "25px" }}
+                  >
+                    <Grid
+                      container
+                      justifyContent={"center"}
+                      alignItems={"center"}
+                    >
+                      <CircularProgress></CircularProgress>
+                      <Typography variant="h5">Fetching Data</Typography>
+                    </Grid>
+                  </TableCell>
+                </TableRow>
               ) : (
                 <TableRow>
                   <TableCell

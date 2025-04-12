@@ -3,8 +3,11 @@
 import { Button, Grid, IconButton, Typography } from "@mui/material";
 import Link from "next/link";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
+  const router = useRouter();
+
   return (
     <Grid container p={4} position={"sticky"}>
       <Grid container item flex={1} alignItems={"center"}>
@@ -21,20 +24,19 @@ const Navbar = () => {
         alignItems={"center"}
       >
         <Grid item>
-          <Link href="/" passHref>
-            <Button
-              variant="outlined"
-              color="black"
-              sx={{
-                "&:hover": {
-                  backgroundColor: "black",
-                  color: "white",
-                },
-              }}
-            >
-              <Typography variant="body1">All Post</Typography>
-            </Button>
-          </Link>
+          <Button
+            variant="outlined"
+            color="black"
+            sx={{
+              "&:hover": {
+                backgroundColor: "black",
+                color: "white",
+              },
+            }}
+            onClick={() => router.push(`/`)}
+          >
+            <Typography variant="body1">All Post</Typography>
+          </Button>
         </Grid>
         <Grid item>
           <Button
@@ -46,27 +48,27 @@ const Navbar = () => {
                 color: "white",
               },
             }}
+            onClick={() => router.push(`/preview`)}
           >
             <Typography variant="body1">Preview</Typography>
           </Button>
         </Grid>
         <Grid item>
-          <Link href="/add" passHref>
-            <Button
-              id="static-id"
-              variant="outlined"
-              sx={{
-                borderColor: "black",
-                color: "black",
-                "&:hover": {
-                  backgroundColor: "black",
-                  color: "white",
-                },
-              }}
-            >
-              <Typography variant="body1">Add Article</Typography>
-            </Button>
-          </Link>
+          <Button
+            id="static-id"
+            variant="outlined"
+            sx={{
+              borderColor: "black",
+              color: "black",
+              "&:hover": {
+                backgroundColor: "black",
+                color: "white",
+              },
+            }}
+            onClick={() => router.push(`/add`)}
+          >
+            <Typography variant="body1">Add Article</Typography>
+          </Button>
         </Grid>
       </Grid>
     </Grid>

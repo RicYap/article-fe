@@ -1,29 +1,17 @@
 "use client";
 
-import {
-  Box,
-  Button,
-  debounce,
-  Divider,
-  FormControl,
-  Grid,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
-  Tab,
-  Tabs,
-} from "@mui/material";
+import { Box, debounce, Divider, Tab, Tabs } from "@mui/material";
 import Navbar from "@/components/navbar";
 import { useCallback, useEffect, useState } from "react";
 import Published from "./allPost/published";
 import Draft from "./allPost/draft";
 import Trashed from "./allPost/trashed";
 import api from "@/services/api";
-import { ArrowLeft, NavigateBefore, NavigateNext } from "@mui/icons-material";
 
 export default function Home() {
   const [tab, setTab] = useState(1);
+
+  const [loading, setLoading] = useState(true);
 
   const [params, setParams] = useState({
     page: 1,
@@ -52,7 +40,6 @@ export default function Home() {
       if (data !== undefined && data !== null) {
         data.forEach((item) => {
           const status = item.status.toLowerCase();
-          console.log("status", status);
 
           if (status === "publish") {
             listPublished.push(item);
@@ -68,43 +55,16 @@ export default function Home() {
           }
         });
 
-        console.log("listdraft");
-
         setArticlePublished(listPublished);
         setArticleDraft(listDraft);
         setArticleTrashed(listTrashed);
+
+        setLoading(false);
       }
     } catch (error) {
       console.log(error);
     }
   }
-
-  const handlePageChange = (newPage) => {
-    if (params.page === newPage) {
-      return;
-    }
-
-    const newParams = {
-      ...params,
-      page: newPage,
-      length: params.length,
-    };
-    setParams(newParams);
-    debounceMountArticlePagination(newParams.length, newParams.page);
-  };
-
-  const handleRowsPerPageChange = async (event, newRows) => {
-    if (params.length === newRows) {
-      return;
-    }
-    const newParams = {
-      ...params,
-      page: 1,
-      length: event.target.value,
-    };
-    setParams(newParams);
-    debounceMountArticlePagination(newParams.length, newParams.page);
-  };
 
   useEffect(() => {
     debounceMountArticlePagination(params.length, params.page);
@@ -131,11 +91,22 @@ export default function Home() {
       {tab === 1 && (
         <Published
           list={articlePublished}
-          onSubmit={()=>debounceMountArticlePagination(params.length, params.page)}
+          loading={loading}
+          onSubmit={() =>
+            debounceMountArticlePagination(params.length, params.page)
+          }
         ></Published>
       )}
-      {tab === 2 && <Draft list={articleDraft}></Draft>}
-      {tab === 3 && <Trashed list={articleTrashed}></Trashed>}
+      {tab === 2 && (
+        <Draft
+          list={articleDraft}
+          loading={loading}
+          onSubmit={() =>
+            debounceMountArticlePagination(params.length, params.page)
+          }
+        ></Draft>
+      )}
+      {tab === 3 && <Trashed list={articleTrashed} loading={loading}></Trashed>}
     </Box>
   );
 }
