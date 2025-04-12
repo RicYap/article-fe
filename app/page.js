@@ -1,15 +1,34 @@
 "use client";
 
-import { Box, debounce, Divider, Tab, Tabs } from "@mui/material";
+import {
+  Box,
+  Button,
+  debounce,
+  Divider,
+  FormControl,
+  Grid,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
+  Tab,
+  Tabs,
+} from "@mui/material";
 import Navbar from "@/components/navbar";
 import { useCallback, useEffect, useState } from "react";
 import Published from "./allPost/published";
 import Draft from "./allPost/draft";
 import Trashed from "./allPost/trashed";
 import api from "@/services/api";
+import { ArrowLeft, NavigateBefore, NavigateNext } from "@mui/icons-material";
 
 export default function Home() {
   const [tab, setTab] = useState(1);
+
+  const [params, setParams] = useState({
+    page: 1,
+    length: 10,
+  });
 
   const [articlePublished, setArticlePublished] = useState([]);
   const [articleDraft, setArticleDraft] = useState([]);
@@ -33,6 +52,7 @@ export default function Home() {
       if (data !== undefined && data !== null) {
         data.forEach((item) => {
           const status = item.status.toLowerCase();
+          console.log("status", status);
 
           if (status === "publish") {
             listPublished.push(item);
@@ -48,18 +68,47 @@ export default function Home() {
           }
         });
 
-        setArticlePublished(listPublished)
-        setArticleDraft(listDraft)
-        setArticleTrashed(listTrashed)
+        console.log("listdraft");
+
+        setArticlePublished(listPublished);
+        setArticleDraft(listDraft);
+        setArticleTrashed(listTrashed);
       }
     } catch (error) {
       console.log(error);
     }
   }
 
-  useEffect(()=>{
-    debounceMountArticlePagination(5, 1)
-  },[])
+  const handlePageChange = (newPage) => {
+    if (params.page === newPage) {
+      return;
+    }
+
+    const newParams = {
+      ...params,
+      page: newPage,
+      length: params.length,
+    };
+    setParams(newParams);
+    debounceMountArticlePagination(newParams.length, newParams.page);
+  };
+
+  const handleRowsPerPageChange = async (event, newRows) => {
+    if (params.length === newRows) {
+      return;
+    }
+    const newParams = {
+      ...params,
+      page: 1,
+      length: event.target.value,
+    };
+    setParams(newParams);
+    debounceMountArticlePagination(newParams.length, newParams.page);
+  };
+
+  useEffect(() => {
+    debounceMountArticlePagination(params.length, params.page);
+  }, []);
 
   return (
     <Box>
@@ -69,7 +118,9 @@ export default function Home() {
       <Tabs
         centered
         value={tab}
-        onChange={(e, newTab) => setTab(newTab)}
+        onChange={(e, newTab) => {
+          setTab(newTab), setParams({ ...params, page: 1 });
+        }}
         sx={{ mb: 2 }}
       >
         <Tab label="Published" value={1} />
@@ -80,6 +131,55 @@ export default function Home() {
       {tab === 1 && <Published list={articlePublished}></Published>}
       {tab === 2 && <Draft list={articleDraft}></Draft>}
       {tab === 3 && <Trashed list={articleTrashed}></Trashed>}
+
+      <Grid container pl={4} pr={4}>
+        <Grid container p={2} width={"100%"} sx={{ backgroundColor: "white" }}>
+          <Grid item flex={1}></Grid>
+          <Grid container item flex={1}>
+            <Grid container item flex={1} justifyContent={"flex-end"}>
+              <IconButton
+                disabled={params.page === 1}
+                onClick={() => handlePageChange(params.page - 1)}
+              >
+                <NavigateBefore></NavigateBefore>
+              </IconButton>
+            </Grid>
+            <Grid container item flex={1} justifyContent={"center"}>
+              <Button variant="outlined" disableRipple disableFocusRipple>
+                {params.page}
+              </Button>
+            </Grid>
+            <Grid container item flex={1} justifyContent={"flex-start"}>
+              <IconButton
+                disabled={tab === 1 && articlePublished.length < params.length}
+                onClick={() => handlePageChange(params.page + 1)}
+              >
+                <NavigateNext></NavigateNext>
+              </IconButton>
+            </Grid>
+          </Grid>
+          <Grid
+            item
+            flex={1}
+            sx={{ display: "flex", justifyContent: "flex-end" }}
+          >
+            <FormControl>
+              <InputLabel id="baris">Baris</InputLabel>
+              <Select
+                size="small"
+                id="baris"
+                value={params.length}
+                label="Baris"
+                onChange={handleRowsPerPageChange}
+              >
+                <MenuItem value={10}>10</MenuItem>
+                <MenuItem value={25}>25</MenuItem>
+                <MenuItem value={50}>50</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
+      </Grid>
     </Box>
   );
 }

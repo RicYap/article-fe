@@ -1,4 +1,7 @@
+"use client"
+
 import { Button, Grid, IconButton, Typography } from "@mui/material";
+import Link from "next/link";
 import React from "react";
 
 const Navbar = () => {
@@ -18,18 +21,20 @@ const Navbar = () => {
         alignItems={"center"}
       >
         <Grid item>
-          <Button
-            variant="outlined"
-            color="black"
-            sx={{
-              "&:hover": {
-                backgroundColor: "black",
-                color: "white",
-              },
-            }}
-          >
-            <Typography variant="body1">All Post</Typography>
-          </Button>
+          <Link href="/" passHref>
+            <Button
+              variant="outlined"
+              color="black"
+              sx={{
+                "&:hover": {
+                  backgroundColor: "black",
+                  color: "white",
+                },
+              }}
+            >
+              <Typography variant="body1">All Post</Typography>
+            </Button>
+          </Link>
         </Grid>
         <Grid item>
           <Button
@@ -44,6 +49,24 @@ const Navbar = () => {
           >
             <Typography variant="body1">Preview</Typography>
           </Button>
+        </Grid>
+        <Grid item>
+          <Link href="/add" passHref>
+            <Button
+              id="static-id"
+              variant="outlined"
+              sx={{
+                borderColor: "black",
+                color: "black",
+                "&:hover": {
+                  backgroundColor: "black",
+                  color: "white",
+                },
+              }}
+            >
+              <Typography variant="body1">Add Article</Typography>
+            </Button>
+          </Link>
         </Grid>
       </Grid>
     </Grid>

@@ -5,15 +5,25 @@ const api = axios.create({
   timeout: 10000,
 });
 
+const CreateArticle = async (body) => {
+  return await api.post(`/article`, body, {});
+};
+
 const GetArticlePagination = async (limit, offset) => {
   return await api.get(`/article/${limit}/${offset}`, {});
 };
 
 const GetArticleById = async (id) => {
-  return await api.get(`/${id}`, {});
+  return await api.get(`/article/${id}`, {});
+};
+
+const EditArticle = async (id, body) => {
+  return await api.put(`/article/${id}`, body, {});
 };
 
 export default {
+  CreateArticle,
   GetArticlePagination,
   GetArticleById,
-}
+  EditArticle,
+};

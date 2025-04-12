@@ -1,3 +1,6 @@
+"use client"
+
+import { Delete, Edit } from "@mui/icons-material";
 import {
   Button,
   Grid,
@@ -9,9 +12,12 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const Trashed = ({ list }) => {
+  const router = useRouter();
+
   return (
     <Grid container width={"100%"} pl={4} pr={4}>
       <Paper sx={{ width: "100%" }}>
@@ -53,6 +59,7 @@ const Trashed = ({ list }) => {
                             color="warning"
                             variant="contained"
                             sx={{ minWidth: 0.7 }}
+                            onClick={() => router.push(`edit/${item.id}`)}
                           >
                             <Edit />
                           </Button>
